@@ -1,3 +1,4 @@
+import { photoUrl } from '../api/client.js';
 import { label } from '../api/format.js';
 
 export const Tag = ({ status }) => <span className={`tag ${status}`}>{label(status)}</span>;
@@ -12,8 +13,9 @@ export const Stat = ({ value, text, tone, icon: Icon }) => (
 // Icon + text for table cells.
 export const Ic = ({ icon: Icon, children, tone }) => <span className={`ic ${tone ?? ''}`}><Icon size={15} />{children}</span>;
 
-// Little machine illustration, tinted by type (stands in for a product photo).
-export function MachineImg({ typeKey, status }) {
+// The first uploaded photo, or a little illustration tinted by type when there is none.
+export function MachineImg({ typeKey, status, photo }) {
+  if (photo) return <img className="mimg photo" src={photoUrl(photo)} alt="" loading="lazy" />;
   const top = {
     paper_cup: <path d="M14 8h14l-2 12H16z M13 8h16" fill="#fff" stroke="#14284B" strokeWidth="1.4" strokeLinejoin="round" />,
     tissue: <><rect x="12" y="8" width="18" height="12" rx="6" fill="#fff" stroke="#14284B" strokeWidth="1.4" /><circle cx="21" cy="14" r="2.2" fill="#14284B" /></>,

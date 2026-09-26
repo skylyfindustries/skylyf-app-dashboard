@@ -27,7 +27,7 @@ export default function ImportMachines({ onClose, onDone }) {
         if (!client) throw new Error(`Unknown client "${get('Client')}"`);
         const m = await api('/admin/machines', {
           method: 'POST',
-          body: { companyId: client.id, code: String(get('Code')), typeKey: String(get('Type')), model: String(get('Model')) || undefined, todayTarget: Number(get('Daily target')) || 0 },
+          body: { companyId: client.id, code: String(get('Code')), typeKey: String(get('Type')), name: String(get('Model')) || String(get('Code')), model: String(get('Model')) || undefined, todayTarget: Number(get('Daily target')) || 0 },
         });
         out.push([get('Client'), m.code, 'Registered', m.deviceKey]);
       } catch (e) { out.push([get('Client'), get('Code'), `Failed: ${e.message}`, '']); }
@@ -50,7 +50,7 @@ export default function ImportMachines({ onClose, onDone }) {
     );
   }
   return (
-    <Modal title="Import machines" submitText="Import" onSubmit={run} onClose={onClose}>
+    <Modal title="Import machines" submitText="Import" success={false} onSubmit={run} onClose={onClose}>
       <p className="muted">Excel file with columns: {COLS.join(', ')}. The client must already exist; Type is the type key (e.g. paper_cup).</p>
       <button type="button" className="alt" onClick={() => download(sample, 'xlsx')}><Download size={15} /> Download template</button>
       <Field label="File"><input type="file" name="file" accept=".xlsx" required /></Field>

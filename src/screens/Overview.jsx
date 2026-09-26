@@ -3,14 +3,12 @@ import { useState } from 'react';
 import { fmt } from '../api/format.js';
 import { useApi } from '../api/useApi.js';
 import { Donut, HBars, Ring, SoldAvailable } from '../components/charts.jsx';
-import StockModal from '../components/StockModal.jsx';
 import { Async, BarChart, Stat } from '../components/ui.jsx';
 
 const bars = (list, key = 'value') => list.map((x) => ({ label: x.date, value: x[key] }));
 
 export default function Overview() {
   const state = useApi('/admin/overview');
-  const [editing, setEditing] = useState(false);
 
   return (
     <>
@@ -60,7 +58,7 @@ export default function Overview() {
                 <HBars data={d.byClient.slice(0, 6)} />
               </div>
               <div className="card">
-                <div className="row tight"><h2>Sold / available</h2><button className="alt" onClick={() => setEditing(true)}>Update stock</button></div>
+                <h2>Machines sold, by type</h2>
                 <SoldAvailable data={d.inventory} />
               </div>
             </div>
@@ -75,7 +73,6 @@ export default function Overview() {
                 </tbody></table>
               </div>
             </div>
-            {editing && <StockModal inventory={d.inventory} onClose={() => setEditing(false)} onDone={() => { setEditing(false); state.reload(); }} />}
           </>
         );
       }}</Async>

@@ -7,6 +7,7 @@ import { useApi } from '../api/useApi.js';
 import { EditDelete } from '../components/Actions.jsx';
 import Modal, { Confirm, Field } from '../components/Modal.jsx';
 import ExportMenu from '../components/ExportMenu.jsx';
+import { Stats, supportStats } from '../components/pageStats.jsx';
 import { Async, Ic, Tag } from '../components/ui.jsx';
 
 const STATUSES = ['open', 'in_progress', 'done'];
@@ -16,9 +17,10 @@ export default function Support() {
   const status = params.get('status') ?? '';
   const state = useApi(`/admin/tickets${status ? `?status=${status}` : ''}`);
   const machines = useApi('/admin/machines').data ?? [];
+  const every = useApi('/admin/tickets'); // unfiltered, for the summary cards
   const [dialog, setDialog] = useState(null); // { kind: 'add' | 'edit' | 'delete', t? }
   const close = () => setDialog(null);
-  const done = () => { close(); state.reload(); };
+  const done = () => { close(); state.reload(); every.reload(); };
 
   return (
     <>
@@ -31,6 +33,7 @@ export default function Support() {
         <ExportMenu id="support" />
         <button onClick={() => setDialog({ kind: 'add' })}>+ New ticket</button>
       </div>
+      <Stats items={supportStats(every.data ?? [])} />
       <Async state={state}>{(list) => (
         <div className="card tablewrap">
           <table>

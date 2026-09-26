@@ -7,6 +7,7 @@ import { useApi } from '../api/useApi.js';
 import { EditDelete } from '../components/Actions.jsx';
 import Modal, { Confirm, Field } from '../components/Modal.jsx';
 import ExportMenu from '../components/ExportMenu.jsx';
+import { Stats, clientsStats } from '../components/pageStats.jsx';
 import { Async, Ic } from '../components/ui.jsx';
 
 export default function Clients() {
@@ -28,6 +29,8 @@ export default function Clients() {
     <>
       <div className="row"><h1>Clients</h1><ExportMenu id="clients" /><button onClick={() => setDialog({ kind: 'add' })}>+ Register client</button></div>
       <Async state={state}>{(list) => (
+        <>
+        <Stats items={clientsStats(list)} />
         <div className="card tablewrap">
           <table>
             <thead><tr><th>Client</th><th>Registered</th><th className="num">Machines</th><th className="num">Running</th><th className="num">Users</th><th className="num">Today</th><th className="num">7 days</th><th>Last login</th><th /></tr></thead>
@@ -42,6 +45,7 @@ export default function Clients() {
             </tbody>
           </table>
         </div>
+        </>
       )}</Async>
 
       {dialog?.kind === 'add' && (

@@ -1,10 +1,12 @@
-import { Activity, Boxes, Factory, HeartPulse, LayoutDashboard, LifeBuoy, LogOut, PackageSearch, FileBarChart, Users } from 'lucide-react';
+import { Activity, Boxes, ClipboardCheck, Factory, Layers, HeartPulse, LayoutDashboard, LifeBuoy, LogOut, Package, ReceiptText, FileBarChart, Users, Wrench } from 'lucide-react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { logout } from '../api/client.js';
+import { FeedbackHost } from './Feedback.jsx';
 import logo from '../assets/logo.webp';
 
 const groups = [
-  ['Fleet', [['overview', 'Overview', LayoutDashboard], ['clients', 'Clients', Users], ['machines', 'Machines', Factory], ['inventory', 'Inventory', PackageSearch], ['catalog', 'Types', Boxes]]],
+  ['Fleet', [['overview', 'Overview', LayoutDashboard], ['clients', 'Clients', Users], ['technicians', 'Technicians', Wrench], ['models', 'Machines', Factory], ['registrations', 'Registrations', ClipboardCheck], ['machines', 'Client machines', Layers], ['catalog', 'Types', Boxes]]],
+  ['Sales', [['parts', 'Parts', Package], ['orders', 'Orders', ReceiptText]]],
   ['Operations', [['support', 'Support', LifeBuoy], ['system', 'System', HeartPulse], ['activity', 'User activity', Activity], ['reports', 'Reports', FileBarChart]]],
 ];
 
@@ -22,6 +24,7 @@ export default function Layout() {
         <button className="link signout" onClick={logout}><LogOut size={16} /><span>Sign out</span></button>
       </nav>
       <main><Outlet /></main>
+      <FeedbackHost />
     </>
   );
 }

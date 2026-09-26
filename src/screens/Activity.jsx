@@ -2,6 +2,7 @@ import { Building2, Calendar, Mail, User, Zap } from 'lucide-react';
 import { date, label } from '../api/format.js';
 import { useApi } from '../api/useApi.js';
 import ExportMenu from '../components/ExportMenu.jsx';
+import { Stats, activityStats } from '../components/pageStats.jsx';
 import { Async, Ic } from '../components/ui.jsx';
 
 export default function Activity() {
@@ -10,6 +11,8 @@ export default function Activity() {
     <>
       <div className="row"><h1>User activity</h1><ExportMenu id="activity" /></div>
       <Async state={state}>{(list) => (
+        <>
+        <Stats items={activityStats(list)} />
         <div className="card tablewrap">
           <table>
             <thead><tr><th>When</th><th>User</th><th>Client</th><th>Action</th><th>Detail</th></tr></thead>
@@ -20,6 +23,7 @@ export default function Activity() {
             </tbody>
           </table>
         </div>
+        </>
       )}</Async>
     </>
   );

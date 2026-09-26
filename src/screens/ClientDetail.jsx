@@ -10,6 +10,7 @@ import Modal, { Confirm, Field } from '../components/Modal.jsx';
 import RegisterMachine from '../components/RegisterMachine.jsx';
 import UserModal from '../components/UserModal.jsx';
 import { useMachineActions } from '../components/useMachineActions.jsx';
+import { Stats, clientDetailStats } from '../components/pageStats.jsx';
 import { Async, Ic } from '../components/ui.jsx';
 
 export default function ClientDetail() {
@@ -32,6 +33,16 @@ export default function ClientDetail() {
           <button onClick={() => setDialog({ kind: 'addMachine' })}>+ Register machine</button>
         </div>
 
+        <Stats items={clientDetailStats(d.machines, d.users)} />
+        <div className="card">
+          <h2>Company details</h2>
+          <div className="grid2" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+            {[['Address', d.company.address], ['GSTIN', d.company.gstin], ['PAN', d.company.pan], ['CIN', d.company.cin], ['Udyam', d.company.udyam]].map(([k, v]) => (
+              <div key={k}><small className="hint">{k}</small><br />{v || '—'}</div>
+            ))}
+          </div>
+        </div>
+        <br />
         <div className="card">
           <h2>Machines</h2>
           <MachineTable machines={d.machines.map((m) => ({ ...m, client: d.company.name }))} actions={machines.actions} />

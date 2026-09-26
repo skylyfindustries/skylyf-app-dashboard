@@ -1,4 +1,4 @@
-import { Boxes, Building2, CircleAlert, Clock, Factory, LifeBuoy, Package, Users } from 'lucide-react';
+import { Boxes, Building2, CalendarCheck, CircleAlert, Clock, Factory, LifeBuoy, Package, Users } from 'lucide-react';
 import { date, day, hours, label } from './format.js';
 
 // Every report is { cols, rows } built from existing admin endpoints — used by the Reports page and each page's Export button.
@@ -35,12 +35,12 @@ export const REPORTS = [
     }),
   },
   {
-    id: 'stock', label: 'Stock by type', icon: Boxes, desc: 'Units in the warehouse vs deployed, per machine type.',
+    id: 'types', label: 'Machines by type', icon: Boxes, desc: 'Machines deployed at clients, per machine type.',
     build: async (api) => {
       const [types, ms] = await Promise.all([api('/admin/machine-types'), machines(api)]);
       return {
-        cols: ['Type', 'Key', 'In warehouse', 'Deployed', 'Total'],
-        rows: types.map((t) => { const n = ms.filter((m) => m.typeKey === t.key).length; return [t.name, t.key, t.stock ?? 0, n, (t.stock ?? 0) + n]; }),
+        cols: ['Type', 'Key', 'Deployed'],
+        rows: types.map((t) => [t.name, t.key, ms.filter((m) => m.typeKey === t.key).length]),
       };
     },
   },
@@ -56,6 +56,13 @@ export const REPORTS = [
     build: async (api) => ({
       cols: ['Raised', 'Client', 'Machine', 'Request', 'Reply', 'Status'],
       rows: (await api('/admin/tickets')).map((t) => [date(t.createdAt), t.client, t.machine, t.note, t.reply, label(t.status)]),
+    }),
+  },
+  {
+    id: 'assignments', label: 'Daily assignments', icon: CalendarCheck, desc: 'Which technician was given which machine each day, and whether it is done.',
+    build: async (api) => ({
+      cols: ['Date', 'Client', 'Technician', 'Machine', 'Status', 'Note'],
+      rows: (await api('/admin/assignments')).map((a) => [a.date, a.client, a.technician, `${a.code ?? ''} ${a.machine}`.trim(), label(a.status), a.note]),
     }),
   },
   {

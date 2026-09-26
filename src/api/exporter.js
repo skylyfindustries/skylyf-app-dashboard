@@ -29,7 +29,11 @@ export async function download({ title, cols, rows, name }, fmt) {
   }
 }
 
-export async function exportReport(id, fmt) {
+// client (optional): keep only that client's rows, for reports that have a Client column
+export async function exportReport(id, fmt, client = '') {
   const r = REPORTS.find((x) => x.id === id);
-  await download({ title: r.label, ...(await r.build(api)), name: `skylyf-${id}-${stamp()}` }, fmt);
+  const t = await r.build(api);
+  const i = t.cols.indexOf('Client');
+  const rows = client && i >= 0 ? t.rows.filter((row) => row[i] === client) : t.rows;
+  await download({ title: client ? `${r.label} - ${client}` : r.label, cols: t.cols, rows, name: `skylyf-${id}${client ? `-${client.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` : ''}-${stamp()}` }, fmt);
 }

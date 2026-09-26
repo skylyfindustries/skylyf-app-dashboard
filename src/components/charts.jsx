@@ -55,19 +55,16 @@ export function HBars({ data }) {
 
 // Two-segment bars per row: navy = sold, gold = available.
 export function SoldAvailable({ data }) {
+  const max = Math.max(1, ...data.map((d) => d.sold));
   return (
     <div className="hbars">
-      {data.map((d) => {
-        const total = d.sold + d.available || 1;
-        return (
-          <div key={d.key} className="hbar">
-            <span>{d.name}</span>
-            <div className="seg"><i style={{ width: `${(d.sold / total) * 100}%`, background: 'var(--navy-2)' }} /><i style={{ width: `${(d.available / total) * 100}%` }} /></div>
-            <em>{d.sold} / {d.available}</em>
-          </div>
-        );
-      })}
-      <p className="legend-line"><i style={{ background: 'var(--navy-2)' }} />Sold <i />Available</p>
+      {data.map((d) => (
+        <div key={d.key} className="hbar">
+          <span>{d.name}</span>
+          <div className="seg"><i style={{ width: `${(d.sold / max) * 100}%`, background: 'var(--navy-2)' }} /></div>
+          <em>{d.sold}</em>
+        </div>
+      ))}
     </div>
   );
 }
