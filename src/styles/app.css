@@ -313,6 +313,17 @@ button.danger, button.icon.danger { color: #fff; }
 .rangerow select { width: 120px; flex: none; }
 .rangerow .dash { color: var(--ink-soft); }
 
+/* Shared motion language: calm entrance, responsive hover, and reduced-motion support. */
+main > * { animation: page-in .42s cubic-bezier(.2,.7,.2,1) both; }
+.card { transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease; }
+.card:hover { box-shadow: 0 14px 34px rgba(20, 33, 61, .11); }
+.stats .stat:hover { transform: translateY(-3px); }
+tbody tr { transition: background .18s ease, transform .18s ease; }
+tbody tr:hover { background: rgba(255, 255, 255, .38); }
+button, input, select, textarea, nav a { transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease, color .18s ease; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(200, 144, 46, .38); outline-offset: 2px; }
+@keyframes page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
 /* confirm + success / failure dialogs (components/Feedback.jsx) sit above any form dialog */
 .backdrop.top { z-index: 30; }
 .modal.result { text-align: center; display: grid; justify-items: center; gap: 4px; width: min(380px, 100%); }

@@ -13,18 +13,29 @@ export const tell = ({ ok, title, message }) => show({ kind: 'tell', ok, title, 
 
 export function FeedbackHost() {
   const [queue, setQueue] = useState([]);
-  useEffect(() => { show = (d) => setQueue((q) => [...q, d]); return () => { show = () => {}; }; }, []);
+  useEffect(() => {
+    show = (d) => setQueue((q) => [...q, d]);
+    return () => { show = () => {}; };
+  }, []);
   const d = queue[0];
-  if (!d) return null;
   const next = () => setQueue((q) => q.slice(1));
   const answer = (yes) => { d.resolve?.(yes); next(); };
+  useEffect(() => {
+    if (!d) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') d.kind === 'ask' ? answer(false) : next();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [d]);
+  if (!d) return null;
 
   if (d.kind === 'ask') {
     return (
       <div className="backdrop top" onMouseDown={(e) => e.target === e.currentTarget && answer(false)}>
-        <div className="modal card result" role="alertdialog" aria-modal="true">
+        <div className="modal card result" role="alertdialog" aria-modal="true" aria-labelledby="feedback-title">
           <TriangleAlert size={40} className={d.danger ? 'stopped' : 'idle'} />
-          <h2>{d.title}</h2>
+          <h2 id="feedback-title">{d.title}</h2>
           <p>{d.message}</p>
           <div className="row">
             <button className={d.danger ? 'danger' : ''} autoFocus onClick={() => answer(true)}>{d.action}</button>
@@ -37,9 +48,9 @@ export function FeedbackHost() {
   const Icon = d.ok ? CircleCheck : CircleAlert;
   return (
     <div className="backdrop top" onMouseDown={(e) => e.target === e.currentTarget && next()}>
-      <div className="modal card result" role="alertdialog" aria-modal="true">
+      <div className="modal card result" role="alertdialog" aria-modal="true" aria-labelledby="feedback-title">
         <Icon size={40} className={d.ok ? 'running' : 'stopped'} />
-        <h2>{d.ok ? 'Success' : 'Failed'}</h2>
+        <h2 id="feedback-title">{d.ok ? 'Success' : 'Failed'}</h2>
         <p><b>{d.title}</b></p>
         <p>{d.message}</p>
         <div className="row"><button autoFocus onClick={next}>OK</button></div>
