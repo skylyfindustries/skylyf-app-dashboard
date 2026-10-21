@@ -558,9 +558,54 @@ label textarea {
 /* overview charts */
 .three {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin-top: 14px;
+}
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.chart-grid > .card {
+  min-width: 0;
+  min-height: 250px;
+  overflow: hidden;
+}
+.chart-grid > .card > h2,
+.two > .card > h2,
+.card > .row-actions h2 {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -.1px;
+}
+.chart-grid > .card > h2::after,
+.two > .card > h2::after,
+.card > .row-actions h2::after {
+  content: '';
+  display: block;
+  width: 26px;
+  height: 3px;
+  margin-top: 7px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--gold), rgba(200, 144, 46, .15));
+}
+.chart-grid .hbars,
+.chart-grid .donut,
+.chart-grid table {
+  margin-top: 22px;
+}
+.chart-grid .hbar {
+  grid-template-columns: minmax(64px, .8fr) 1.5fr auto;
+}
+.chart-grid .hbar > div {
+  height: 12px;
+}
+.chart-grid .hbar > div i {
+  background: linear-gradient(90deg, var(--navy-2), var(--gold));
+  border-radius: inherit;
 }
 .two {
   margin-bottom: 0;
@@ -583,6 +628,11 @@ label textarea {
 .donut svg {
   width: 130px;
   flex: none;
+  overflow: visible;
+}
+.donut svg circle:not(:first-child) {
+  transform-origin: 50% 50%;
+  animation: chart-draw .9s cubic-bezier(.2,.7,.2,1) both;
 }
 .donut-n {
   font-size: 8px;
@@ -632,6 +682,11 @@ label textarea {
 .ring svg {
   width: 96px;
   flex: none;
+  overflow: visible;
+}
+.ring svg circle:last-child {
+  transform-origin: 50% 50%;
+  animation: chart-draw 1s cubic-bezier(.2,.7,.2,1) both;
 }
 .ring b {
   display: block;
@@ -680,6 +735,10 @@ label textarea {
   from {
     transform: scaleX(0);
   }
+}
+@keyframes chart-draw {
+  from { opacity: 0; transform: rotate(-18deg) scale(.82); }
+  to { opacity: 1; transform: rotate(0) scale(1); }
 }
 
 /* row actions */
@@ -1404,8 +1463,9 @@ textarea:focus-visible {
 }
 .linechart svg {
   width: 100%;
-  height: 180px;
+  height: 190px;
   display: block;
+  overflow: visible;
 }
 .lc-line {
   fill: none;
@@ -1467,4 +1527,22 @@ textarea:focus-visible {
 .pill.started,
 .pill.assigned {
   background: rgba(224, 178, 98, 0.25);
+}
+
+@media (max-width: 1320px) {
+  .chart-grid,
+  .three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 980px) {
+  .chart-grid,
+  .three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chart-grid > .card { min-height: 230px; }
+}
+@media (max-width: 650px) {
+  .chart-grid,
+  .three { grid-template-columns: 1fr; }
+  .chart-grid > .card { min-height: auto; }
+  .donut { flex-wrap: wrap; }
+  .donut svg { width: 112px; }
+  .hbar { grid-template-columns: 82px 1fr auto; gap: 7px; }
 }

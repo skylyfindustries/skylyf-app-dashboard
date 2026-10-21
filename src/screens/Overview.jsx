@@ -191,7 +191,7 @@ export default function Overview() {
                 </div>
               </div>
 
-              <div className="three reveal">
+              <div className="chart-grid reveal">
                 <div className="card">
                   <h2>Machine status</h2>
                   <Donut
@@ -225,7 +225,7 @@ export default function Overview() {
                 </div>
               </div>
 
-              <div className="three reveal">
+              <div className="chart-grid reveal">
                 <div className="card">
                   <h2>Support queries, last 7 days</h2>
                   <BarChart data={bars(d.ticketsDaily)} />
