@@ -17,6 +17,7 @@ import Reports from './screens/Reports.jsx';
 import Support from './screens/Support.jsx';
 import System from './screens/System.jsx';
 import Technicians from './screens/Technicians.jsx';
+import WooCommerce from './screens/WooCommerce.jsx';
 
 export default function App() {
   const [authed, setAuthed] = useState(!!store.get('at'));
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="catalog" element={<Catalog />} />
         <Route path="parts" element={<Parts />} />
         <Route path="orders" element={<Orders />} />
+        <Route path="woocommerce/orders" element={<WooCommerce />} />
         <Route path="support" element={<Support />} />
         <Route path="system" element={<System />} />
         <Route path="reports" element={<Reports />} />

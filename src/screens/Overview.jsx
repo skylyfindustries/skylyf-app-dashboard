@@ -2,8 +2,45 @@ import { AlertTriangle, Boxes, CirclePause, CirclePlay, Factory, LifeBuoy, Messa
 import { useState } from 'react';
 import { fmt } from '../api/format.js';
 import { useApi } from '../api/useApi.js';
-import { Donut, HBars, Ring, SoldAvailable } from '../components/charts.jsx';
+import { Donut, HBars, LineChart, Ring, SoldAvailable } from '../components/charts.jsx';
 import { Async, BarChart, Stat } from '../components/ui.jsx';
+
+const RANGES = [['today', 'Today'], [7, '1w'], [14, '2w'], [21, '3w']];
+
+// Napkin production graph: hour by hour for today, day by day for 1/2/3 weeks.
+function ProductionGraph({ d }) {
+  const [range, setRange] = useState('today');
+  const data = range === 'today'
+    ? d.hourly.map((h) => ({ label: `${h.hour}h`, value: h.produced }))
+    : d.daily.slice(-range).map((x) => ({ label: x.date.slice(5), value: x.produced }));
+  return (
+    <div className="card reveal">
+      <div className="row-actions">
+        <h2>Paper napkin production, {range === 'today' ? 'today by hour' : `last ${range / 7} week${range > 7 ? 's' : ''}`}</h2>
+        <div className="range">{RANGES.map(([k, l]) => <button key={k} className={range === k ? 'on' : ''} onClick={() => setRange(k)}>{l}</button>)}</div>
+      </div>
+      <LineChart key={range} data={data} />
+    </div>
+  );
+}
+
+function TechnicianCarousel({ list }) {
+  if (!list.length) return null;
+  return (
+    <div className="card reveal">
+      <h2>Technicians today</h2>
+      <div className="carousel">
+        {list.map((t) => (
+          <div key={t.id} className="card tech">
+            <b>{t.name}</b>
+            <small>{t.company}{t.shift && ` · ${t.shift}`}</small>
+            <span className={`pill ${t.status}`}>{t.status}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const bars = (list, key = 'value') => list.map((x) => ({ label: x.date, value: x[key] }));
 
@@ -31,6 +68,9 @@ export default function Overview() {
               <Stat icon={AlertTriangle} value={d.openAlerts} text="Open alerts" />
               <Stat icon={MessageSquare} value={d.support.resolvedToday} text="Resolved today" tone="running" />
             </div>
+
+            <ProductionGraph d={d} />
+            <TechnicianCarousel list={d.technicians} />
 
             <div className="two reveal">
               <div className="card">

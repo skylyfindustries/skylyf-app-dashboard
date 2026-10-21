@@ -68,3 +68,24 @@ export function SoldAvailable({ data }) {
     </div>
   );
 }
+
+// Animated area/line chart: [{label, value}]. The line draws itself and the area fades in; remount (key) to replay.
+export function LineChart({ data }) {
+  const W = 600, H = 180, P = 8;
+  const max = Math.max(1, ...data.map((d) => d.value));
+  const x = (i) => P + (data.length < 2 ? 0 : (i / (data.length - 1)) * (W - 2 * P));
+  const y = (v) => H - P - (v / max) * (H - 2 * P);
+  const pts = data.map((d, i) => `${x(i).toFixed(1)},${y(d.value).toFixed(1)}`);
+  const line = `M${pts.join(' L')}`;
+  const step = Math.ceil(data.length / 8);
+  return (
+    <div className="linechart">
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img">
+        <path d={`${line} L${x(data.length - 1)},${H - P} L${x(0)},${H - P}Z`} className="lc-area" />
+        <path d={line} pathLength="1" className="lc-line" />
+        {data.map((d, i) => <circle key={d.label} cx={x(i)} cy={y(d.value)} r="3" className="lc-dot" style={{ animationDelay: `${0.6 + i * 0.02}s` }}><title>{`${d.label}: ${fmt(d.value)}`}</title></circle>)}
+      </svg>
+      <div className="bars-x">{data.map((d, i) => <span key={d.label}>{i % step === 0 ? d.label : ''}</span>)}</div>
+    </div>
+  );
+}

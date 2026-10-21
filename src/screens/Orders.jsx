@@ -11,6 +11,41 @@ import { rupees } from './Parts.jsx';
 const STATUS = ['placed', 'confirmed', 'shipped', 'delivered', 'cancelled'];
 const tone = { placed: 'idle', confirmed: 'running', shipped: 'running', delivered: 'running', cancelled: 'stopped' };
 
+const RETURN_STATUS = ['requested', 'approved', 'rejected', 'received', 'refunded', 'exchanged'];
+
+// Customers' return / exchange requests: set the stage and leave a note they can see in the app.
+// "received" puts the parts back in stock.
+function Returns() {
+  const state = useApi('/admin/returns');
+  const save = async (r, body) => { await api(`/admin/returns/${r.id}`, { method: 'PATCH', body }); state.reload(); };
+  return (
+    <Async state={state}>{(list) => (
+      <>
+        <h2 style={{ marginTop: 28 }}>Returns and exchanges</h2>
+        <div className="card tablewrap">
+          <table>
+            <thead><tr><th>Request</th><th>Client</th><th>Order</th><th>Parts</th><th>Reason</th><th>Status</th><th>Note to client</th></tr></thead>
+            <tbody>
+              {list.map((r) => (
+                <tr key={r.id}>
+                  <td><b>{r.number}</b><br /><small>{r.type} · {date(r.createdAt)}</small></td>
+                  <td>{r.company}</td>
+                  <td>{r.orderNumber}</td>
+                  <td>{r.items.map((i) => `${i.name} × ${i.qty}`).join(', ')}{r.note && <><br /><small>{r.note}</small></>}</td>
+                  <td>{r.reason.replace(/_/g, ' ')}</td>
+                  <td><select value={r.status} onChange={(e) => save(r, { status: e.target.value })}>{RETURN_STATUS.map((s) => <option key={s} value={s}>{s}</option>)}</select></td>
+                  <td><input defaultValue={r.adminNote} placeholder="Optional" onBlur={(e) => e.target.value !== r.adminNote && save(r, { adminNote: e.target.value })} /></td>
+                </tr>
+              ))}
+              {!list.length && <tr><td colSpan="7">No return or exchange requests.</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </>
+    )}</Async>
+  );
+}
+
 // Tax invoice for one order. Printing hides everything else on the page (see @media print in app.css).
 function Invoice({ o, onClose }) {
   return (
@@ -109,6 +144,8 @@ export default function Orders() {
           </>
         );
       }}</Async>
+
+      <Returns />
 
       {open && (
         <Modal title={`Order ${open.number}`} wide onClose={() => setOpen(null)}
