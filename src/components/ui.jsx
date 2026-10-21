@@ -1,25 +1,72 @@
-import { photoUrl } from '../api/client.js';
-import { label } from '../api/format.js';
+import { photoUrl } from "../api/client.js";
+import { label } from "../api/format.js";
 
-export const Tag = ({ status }) => <span className={`tag ${status}`}>{label(status)}</span>;
+export const Tag = ({ status }) => (
+  <span className={`tag ${status}`}>{label(status)}</span>
+);
 
 export const Stat = ({ value, text, tone, icon: Icon }) => (
   <div className="card stat">
-    <div className="chip"><Icon size={20} /></div>
-    <div><b className={tone}>{value}</b><span>{text}</span></div>
+    <div className="chip">
+      <Icon size={20} />
+    </div>
+    <div>
+      <b className={tone}>{value}</b>
+      <span>{text}</span>
+    </div>
   </div>
 );
 
 // Icon + text for table cells.
-export const Ic = ({ icon: Icon, children, tone }) => <span className={`ic ${tone ?? ''}`}><Icon size={15} />{children}</span>;
+export const Ic = ({ icon: Icon, children, tone }) => (
+  <span className={`ic ${tone ?? ""}`}>
+    <Icon size={15} />
+    {children}
+  </span>
+);
 
 // The first uploaded photo, or a little illustration tinted by type when there is none.
 export function MachineImg({ typeKey, status, photo }) {
-  if (photo) return <img className="mimg photo" src={photoUrl(photo)} alt="" loading="lazy" />;
+  if (photo)
+    return (
+      <img className="mimg photo" src={photoUrl(photo)} alt="" loading="lazy" />
+    );
   const top = {
-    paper_cup: <path d="M14 8h14l-2 12H16z M13 8h16" fill="#fff" stroke="#14284B" strokeWidth="1.4" strokeLinejoin="round" />,
-    tissue: <><rect x="12" y="8" width="18" height="12" rx="6" fill="#fff" stroke="#14284B" strokeWidth="1.4" /><circle cx="21" cy="14" r="2.2" fill="#14284B" /></>,
-  }[typeKey] ?? <circle cx="21" cy="14" r="6" fill="#fff" stroke="#14284B" strokeWidth="1.4" strokeDasharray="3 2" />;
+    paper_cup: (
+      <path
+        d="M14 8h14l-2 12H16z M13 8h16"
+        fill="#fff"
+        stroke="#14284B"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+    ),
+    tissue: (
+      <>
+        <rect
+          x="12"
+          y="8"
+          width="18"
+          height="12"
+          rx="6"
+          fill="#fff"
+          stroke="#14284B"
+          strokeWidth="1.4"
+        />
+        <circle cx="21" cy="14" r="2.2" fill="#14284B" />
+      </>
+    ),
+  }[typeKey] ?? (
+    <circle
+      cx="21"
+      cy="14"
+      r="6"
+      fill="#fff"
+      stroke="#14284B"
+      strokeWidth="1.4"
+      strokeDasharray="3 2"
+    />
+  );
   return (
     <svg className="mimg" viewBox="0 0 42 42" aria-hidden="true">
       <rect x="4" y="22" width="34" height="14" rx="4" fill="#C8902E" />
@@ -43,9 +90,19 @@ export function BarChart({ data }) {
   return (
     <>
       <div className="bars">
-        {data.map((d) => <div key={d.label} style={{ height: `${(d.value / max) * 100}%` }} title={`${d.label}: ${d.value.toLocaleString()}`} />)}
+        {data.map((d) => (
+          <div
+            key={d.label}
+            style={{ height: `${(d.value / max) * 100}%` }}
+            title={`${d.label}: ${d.value.toLocaleString()}`}
+          />
+        ))}
       </div>
-      <div className="bars-x">{data.map((d) => <span key={d.label}>{d.label.slice(-2)}</span>)}</div>
+      <div className="bars-x">
+        {data.map((d) => (
+          <span key={d.label}>{d.label.slice(-2)}</span>
+        ))}
+      </div>
     </>
   );
 }
