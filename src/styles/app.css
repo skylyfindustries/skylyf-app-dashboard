@@ -65,12 +65,13 @@ body::after {
 /* layout */
 main {
   margin: 0 0 0 256px;
-  padding: 24px 24px 24px 8px;
+  width: min(calc(100vw - 280px), 1680px);
+  padding: 28px 32px 40px 16px;
 }
 h1 {
-  font-size: 26px;
-  font-weight: 400;
-  margin: 0 0 16px;
+  font-size: clamp(26px, 2vw, 34px);
+  font-weight: 500;
+  margin: 0 0 22px;
   letter-spacing: -0.3px;
 }
 h2 {
@@ -100,6 +101,18 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 14px;
   margin-bottom: 16px;
+}
+.overview-page > .grid.stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.overview-page > .grid.stats .stat {
+  min-height: 92px;
+  padding: 16px;
+}
+.overview-page > .grid.stats .stat b {
+  font-size: clamp(22px, 2vw, 30px);
 }
 .two {
   display: grid;
@@ -570,7 +583,7 @@ label textarea {
 }
 .chart-grid > .card {
   min-width: 0;
-  min-height: 250px;
+  min-height: 230px;
   overflow: hidden;
 }
 .chart-grid > .card > h2,
@@ -596,6 +609,12 @@ label textarea {
 .chart-grid .donut,
 .chart-grid table {
   margin-top: 22px;
+}
+.overview-page .two > .card {
+  min-height: 270px;
+}
+.overview-page .card {
+  border-radius: 18px;
 }
 .chart-grid .hbar {
   grid-template-columns: minmax(64px, .8fr) 1.5fr auto;
@@ -1530,15 +1549,22 @@ textarea:focus-visible {
 }
 
 @media (max-width: 1320px) {
+  main { width: calc(100vw - 280px); }
+  .overview-page > .grid.stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .chart-grid,
   .three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 980px) {
+  main { width: calc(100vw - 90px); }
+  .overview-page > .grid.stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .chart-grid,
   .three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .chart-grid > .card { min-height: 230px; }
 }
 @media (max-width: 650px) {
+  main { width: auto; }
+  .overview-page > .grid.stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .overview-page > .grid.stats .stat { min-height: 78px; padding: 12px; }
   .chart-grid,
   .three { grid-template-columns: 1fr; }
   .chart-grid > .card { min-height: auto; }

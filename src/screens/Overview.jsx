@@ -93,7 +93,7 @@ export default function Overview() {
   const state = useApi("/admin/overview");
 
   return (
-    <>
+    <div className="overview-page">
       <h1>Overview</h1>
       <Async state={state}>
         {(d) => {
@@ -101,7 +101,7 @@ export default function Overview() {
             d.machines.running + d.machines.stopped + d.machines.idle;
           return (
             <>
-              <div className="grid reveal">
+              <div className="grid stats reveal" style={{ "--cols": 4 }}>
                 <Stat
                   icon={MessageSquare}
                   value={d.support.today}
@@ -256,6 +256,6 @@ export default function Overview() {
           );
         }}
       </Async>
-    </>
+    </div>
   );
 }
