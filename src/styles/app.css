@@ -616,6 +616,77 @@ label textarea {
 .overview-page .card {
   border-radius: 18px;
 }
+.overview-section-title {
+  display: flex;
+  align-items: end;
+  margin: 28px 0 12px;
+}
+.overview-section-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+.overview-section-title p {
+  margin: 3px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+.ops-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.compact-table {
+  min-width: 0;
+  padding: 16px;
+}
+.compact-table h2 {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.compact-table .tablewrap {
+  margin: 0 -4px -4px;
+}
+.compact-table table {
+  width: 100%;
+}
+.compact-table th,
+.compact-table td {
+  padding: 9px 5px;
+  font-size: 12px;
+}
+.compact-table th {
+  color: var(--ink-soft);
+  font-size: 10px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.sales-card {
+  margin-top: 14px;
+}
+.sales-card .row-actions {
+  align-items: start;
+}
+.sales-total {
+  color: var(--gold-text);
+  font-size: 20px;
+}
+.analytics-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.analytics-chart {
+  margin-bottom: 14px;
+}
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.analytics-grid .compact-table svg {
+  vertical-align: -3px;
+  color: var(--gold-text);
+}
 .chart-grid .hbar {
   grid-template-columns: minmax(64px, .8fr) 1.5fr auto;
 }
@@ -1551,12 +1622,16 @@ textarea:focus-visible {
 @media (max-width: 1320px) {
   main { width: calc(100vw - 280px); }
   .overview-page > .grid.stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ops-grid { grid-template-columns: 1fr 1fr; }
+  .analytics-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .chart-grid,
   .three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 980px) {
   main { width: calc(100vw - 90px); }
   .overview-page > .grid.stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ops-grid,
+  .analytics-grid { grid-template-columns: 1fr; }
   .chart-grid,
   .three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .chart-grid > .card { min-height: 230px; }
@@ -1565,6 +1640,7 @@ textarea:focus-visible {
   main { width: auto; }
   .overview-page > .grid.stats { grid-template-columns: 1fr 1fr; gap: 10px; }
   .overview-page > .grid.stats .stat { min-height: 78px; padding: 12px; }
+  .analytics-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
   .chart-grid,
   .three { grid-template-columns: 1fr; }
   .chart-grid > .card { min-height: auto; }

@@ -14,6 +14,7 @@ import {
   Users,
   Wrench,
   ShoppingCart,
+  BarChart3,
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { logout } from "../api/client.js";
@@ -47,6 +48,7 @@ const groups = [
       ["support", "Support", LifeBuoy],
       ["system", "System", HeartPulse],
       ["activity", "User activity", Activity],
+      ["analytics", "App analytics", BarChart3],
       ["reports", "Reports", FileBarChart],
     ],
   ],

@@ -89,8 +89,32 @@ function TechnicianCarousel({ list }) {
 const bars = (list, key = "value") =>
   list.map((x) => ({ label: x.date, value: x[key] }));
 
+function CompactTable({ title, columns, rows, empty = "No data recorded yet." }) {
+  return (
+    <div className="card compact-table">
+      <h2>{title}</h2>
+      <div className="tablewrap">
+        <table>
+          <thead>
+            <tr>{columns.map((c) => <th key={c.label}>{c.label}</th>)}</tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.id}>
+                {columns.map((c) => <td key={c.label}>{c.render(row)}</td>)}
+              </tr>
+            ))}
+            {!rows.length && <tr><td colSpan={columns.length} className="muted">{empty}</td></tr>}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 export default function Overview() {
   const state = useApi("/admin/overview");
+  const extras = useApi("/admin/overview-extras");
 
   return (
     <div className="overview-page">
@@ -252,6 +276,59 @@ export default function Overview() {
                   </table>
                 </div>
               </div>
+
+              <Async state={extras}>
+                {(x) => (
+                  <>
+                    <div className="overview-section-title">
+                      <div>
+                        <h2>Operations at a glance</h2>
+                        <p>Live fleet activity and the latest customer activity.</p>
+                      </div>
+                    </div>
+                    <div className="ops-grid reveal">
+                      <CompactTable
+                        title="Recent registrations"
+                        columns={[
+                          { label: "Machine", render: (r) => <><b>{r.name}</b><br /><small>{r.model}</small></> },
+                          { label: "Client", render: (r) => r.client || "—" },
+                          { label: "Status", render: (r) => <span className={`tag ${r.status}`}>{r.status}</span> },
+                        ]}
+                        rows={x.registrations}
+                      />
+                      <CompactTable
+                        title="Currently running"
+                        columns={[
+                          { label: "Machine", render: (r) => <b>{r.code}</b> },
+                          { label: "Client", render: (r) => r.client || "—" },
+                          { label: "Today", render: (r) => fmt(r.produced) },
+                        ]}
+                        rows={x.runningMachines}
+                        empty="No machines are running right now."
+                      />
+                      <CompactTable
+                        title="Recent orders"
+                        columns={[
+                          { label: "Order", render: (r) => <><b>{r.number}</b><br /><small>{r.client || "—"}</small></> },
+                          { label: "Items", render: (r) => r.items },
+                          { label: "Total", render: (r) => `₹${fmt(r.total)}` },
+                        ]}
+                        rows={x.recentOrders}
+                      />
+                    </div>
+                    <div className="card sales-card reveal">
+                      <div className="row-actions">
+                        <div>
+                          <h2>Sales, last 14 days</h2>
+                          <small>Confirmed, shipped and delivered app orders</small>
+                        </div>
+                        <b className="sales-total">₹{fmt(x.sales.reduce((sum, s) => sum + s.total, 0))}</b>
+                      </div>
+                      <BarChart data={x.sales.map((s) => ({ label: s.date, value: s.total }))} />
+                    </div>
+                  </>
+                )}
+              </Async>
             </>
           );
         }}

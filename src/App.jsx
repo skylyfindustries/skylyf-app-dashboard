@@ -18,6 +18,7 @@ import Support from "./screens/Support.jsx";
 import System from "./screens/System.jsx";
 import Technicians from "./screens/Technicians.jsx";
 import WooCommerce from "./screens/WooCommerce.jsx";
+import MobileAnalytics from "./screens/MobileAnalytics.jsx";
 
 export default function App() {
   const [authed, setAuthed] = useState(!!store.get("at"));
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="system" element={<System />} />
         <Route path="reports" element={<Reports />} />
         <Route path="activity" element={<Activity />} />
+        <Route path="analytics" element={<MobileAnalytics />} />
         <Route path="*" element={<Navigate to="/overview" replace />} />
       </Route>
     </Routes>
