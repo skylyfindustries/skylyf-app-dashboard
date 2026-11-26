@@ -1,3 +1,4 @@
+import Database from "./screens/Database.jsx";
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { setAuthLostHandler, store } from "./api/client.js";
@@ -15,9 +16,11 @@ import Parts from "./screens/Parts.jsx";
 import Overview from "./screens/Overview.jsx";
 import Reports from "./screens/Reports.jsx";
 import Support from "./screens/Support.jsx";
+import ServiceRequests from "./screens/ServiceRequests.jsx";
 import System from "./screens/System.jsx";
 import Technicians from "./screens/Technicians.jsx";
 import WooCommerce from "./screens/WooCommerce.jsx";
+import Erp from "./screens/Erp.jsx";
 import MobileAnalytics from "./screens/MobileAnalytics.jsx";
 
 export default function App() {
@@ -39,11 +42,14 @@ export default function App() {
         <Route path="parts" element={<Parts />} />
         <Route path="orders" element={<Orders />} />
         <Route path="woocommerce/orders" element={<WooCommerce />} />
+        <Route path="service-requests" element={<ServiceRequests />} />
         <Route path="support" element={<Support />} />
         <Route path="system" element={<System />} />
         <Route path="reports" element={<Reports />} />
         <Route path="activity" element={<Activity />} />
+        <Route path="database" element={<Database />} />
         <Route path="analytics" element={<MobileAnalytics />} />
+        <Route path="erp/*" element={<Erp />} />
         <Route path="*" element={<Navigate to="/overview" replace />} />
       </Route>
     </Routes>

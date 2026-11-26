@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build && cd crm-app && npm run build -- --outDir ../dist/crm --emptyOutDir",
+    "preview": "vite preview",
+    "dev:crm": "cd crm-app && vite",
+    "postinstall": "cd crm-app && npm install --no-audit --no-fund"
   },
   "dependencies": {
     "jspdf": "^4.2.1",

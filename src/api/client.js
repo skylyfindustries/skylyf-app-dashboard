@@ -1,5 +1,5 @@
 const BASE =
-  import.meta.env.VITE_API_URL || "https://backend.skylyf.net/api/v1";
+  import.meta.env.VITE_API_URL || "http://localhost:4500/api/v1";
 
 // sessionStorage can throw (private mode) — degrade to "not logged in".
 export const store = {

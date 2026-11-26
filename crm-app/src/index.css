@@ -1,0 +1,225 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Skylyf design tokens: warm off-white page, soft white cards, hairlines and one blue accent.
+*/
+@layer base {
+  :root {
+    color-scheme: light;
+
+    /* surfaces: warm off-white page, softer white cards */
+    --background: 45 22% 96.5%; /* #f8f7f3 */
+    --card: 45 30% 99%; /* #fdfdfb */
+    --popover: 0 0% 100%;
+    --muted: 45 16% 93%;
+    --secondary: 45 16% 93%;
+    --accent: 45 16% 92%;
+
+    /* text */
+    --foreground: 222 22% 12%;
+    --card-foreground: 222 22% 12%;
+    --popover-foreground: 222 22% 12%;
+    --secondary-foreground: 222 22% 12%;
+    --accent-foreground: 222 22% 12%;
+    --muted-foreground: 220 8% 40%;
+
+    /* accent: blue, white text on top */
+    --primary: 221 83% 53%; /* #2563eb */
+    --primary-foreground: 0 0% 100%;
+
+    --success: 152 60% 32%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 90% 42%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 358 70% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 45 12% 86%;
+    --input: 45 12% 86%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 45 25% 98%;
+    --sidebar-foreground: 220 8% 38%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 45 16% 92%;
+    --sidebar-accent-foreground: 222 22% 12%;
+    --sidebar-border: 45 12% 88%;
+    --sidebar-ring: 221 83% 53%;
+
+    --chart-1: 221 83% 53%;
+    --chart-2: 220 9% 46%;
+    --chart-3: 217 91% 70%;
+    --chart-4: 220 9% 64%;
+    --chart-5: 220 9% 80%;
+
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+    font-optical-sizing: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-wrap: balance;
+  }
+  h1,
+  h2 {
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* figures line up in columns everywhere */
+  table,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* motion: short, one curve, color/opacity/transform only */
+  .transition-colors {
+    transition-timing-function: var(--ease);
+    transition-duration: 150ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .card-shadow {
+    box-shadow: 0 1px 2px rgb(20 24 40 / 0.04);
+  }
+  .card-shadow-hover {
+    box-shadow: 0 8px 24px rgb(20 24 40 / 0.08);
+  }
+  /* job numbers and rack codes: stamped-plate tag */
+  .plate {
+    @apply font-mono text-xs rounded-[6px] bg-muted px-1.5 py-0.5 text-muted-foreground;
+  }
+}
+
+/* Slide-up entrance for page blocks, grid cards and table rows.
+   `backwards` fill so no lingering transform (keeps fixed/portal children safe). */
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@layer utilities {
+  .slide-up { animation: slide-up 0.6s var(--ease) backwards; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  main > div > *:not(.animate-fade-in),
+  main .grid > *:not(.animate-fade-in) {
+    animation: slide-up 0.6s var(--ease) backwards;
+  }
+  main > div > *:nth-child(2) { animation-delay: 60ms; }
+  main > div > *:nth-child(3) { animation-delay: 120ms; }
+  main > div > *:nth-child(4) { animation-delay: 180ms; }
+  main > div > *:nth-child(5) { animation-delay: 240ms; }
+  main > div > *:nth-child(n+6) { animation-delay: 300ms; }
+  main .grid > *:nth-child(2) { animation-delay: 80ms; }
+  main .grid > *:nth-child(3) { animation-delay: 160ms; }
+  main .grid > *:nth-child(n+4) { animation-delay: 240ms; }
+
+  tbody tr { animation: slide-up 0.5s var(--ease) backwards; }
+  tbody tr:nth-child(1) { animation-delay: 40ms; }
+  tbody tr:nth-child(2) { animation-delay: 80ms; }
+  tbody tr:nth-child(3) { animation-delay: 120ms; }
+  tbody tr:nth-child(4) { animation-delay: 160ms; }
+  tbody tr:nth-child(5) { animation-delay: 200ms; }
+  tbody tr:nth-child(6) { animation-delay: 240ms; }
+  tbody tr:nth-child(7) { animation-delay: 280ms; }
+  tbody tr:nth-child(8) { animation-delay: 320ms; }
+  tbody tr:nth-child(n+9) { animation-delay: 360ms; }
+
+  /* progress bars grow in */
+  [class*="rounded-full"][style*="width"] {
+    transform-origin: left;
+    animation: grow-x 0.9s var(--ease) 0.2s backwards;
+  }
+}
+
+/* Mobile */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, svg, video { max-width: 100%; }
+@media (max-width: 767px) {
+  /* wide tables scroll sideways inside their card instead of breaking the page */
+  main table { display: block; overflow-x: auto; max-width: 100%; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+  main .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+  /* 16px inputs stop iOS from zooming on focus */
+  input, select, textarea { font-size: 16px !important; }
+  /* roomier tap targets */
+  main button, main a[role="button"] { min-height: 36px; }
+  /* three-up and denser grids stack to two columns */
+  main .grid.grid-cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* page title rows wrap */
+  main > div > .flex.items-end, main > div > .flex.items-center { flex-wrap: wrap; }
+}
+
+@media (max-width: 767px) {
+  /* grid children may shrink below their content (date pickers, selects) */
+  .grid > * { min-width: 0; }
+  input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"] {
+    min-width: 0; max-width: 100%; width: 100%; -webkit-appearance: none; appearance: none;
+  }
+  /* filter rows: search, selects and buttons use the full width */
+  main .flex.flex-wrap > .relative { flex: 1 1 100%; max-width: 100%; }
+  main .flex.flex-wrap > select, main .flex.flex-wrap > [role="combobox"] { flex: 1 1 calc(50% - 0.5rem); }
+}
+
+/* inputs + buttons slide up from the bottom on entry */
+@keyframes ui-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+button,
+input,
+select,
+textarea {
+  animation: ui-slide-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  button,
+  input,
+  select,
+  textarea {
+    animation: none;
+  }
+}

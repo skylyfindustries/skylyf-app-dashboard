@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    proxy: { "/api": process.env.BACKEND_URL || "https://backend.skylyf.net" },
+    proxy: { "/crm": { target: "http://localhost:8080", ws: true }, "/api": process.env.BACKEND_URL || "http://localhost:4500" },
   },
 });

@@ -127,13 +127,16 @@ a {
 
 /* glass card */
 .card {
-  background: var(--glass);
+  background: #fff3;
   border: 1px solid var(--glass-line);
   border-radius: 20px;
   padding: 18px;
-  box-shadow: var(--shadow);
+  box-shadow:
+    inset 0 1px 2px #fff,
+    var(--shadow);
   -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px); /* fallback where url() filters are unsupported */
+  backdrop-filter: url(#lens);
 }
 
 /* glass sidebar */
@@ -1272,12 +1275,21 @@ body::before,
 body::after {
   opacity: 0.9;
 }
-.card,
 nav {
   background: var(--sheen);
   border: 1px solid var(--glass-line);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
   backdrop-filter: blur(24px) saturate(160%);
+}
+.card {
+  background: #fff3;
+  border: 1px solid var(--glass-line);
+  box-shadow:
+    inset 0 1px 2px #fff,
+    var(--shadow);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  backdrop-filter: url(#lens);
 }
 .modal {
   background: linear-gradient(
@@ -1461,7 +1473,9 @@ main > * {
     border-color 0.24s ease;
 }
 .card:hover {
-  box-shadow: 0 14px 34px rgba(20, 33, 61, 0.11);
+  box-shadow:
+    inset 0 1px 2px #fff,
+    0 14px 34px rgba(20, 33, 61, 0.11);
 }
 .stats .stat:hover {
   transform: translateY(-3px);
@@ -1647,4 +1661,92 @@ textarea:focus-visible {
   .donut { flex-wrap: wrap; }
   .donut svg { width: 112px; }
   .hbar { grid-template-columns: 82px 1fr auto; gap: 7px; }
+}
+
+/* liquid-glass buttons: #fff3 fill, inset top highlight, #lens backdrop refraction */
+button {
+  background: #fff3;
+  color: var(--gold-text);
+  border: 1px solid var(--glass-line);
+  box-shadow:
+    inset 0 1px 2px #fff,
+    0 4px 14px rgba(200, 144, 46, 0.18);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  backdrop-filter: url(#lens);
+}
+button.alt,
+button.icon {
+  background: #fff3;
+  color: var(--ink);
+  box-shadow:
+    inset 0 1px 2px #fff,
+    0 4px 14px rgba(20, 33, 61, 0.06);
+}
+button.danger,
+button.icon.danger {
+  background: rgba(229, 72, 77, 0.55);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 2px #fff,
+    0 6px 18px rgba(229, 72, 77, 0.25);
+}
+button.link {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* inputs + buttons slide up from the bottom on entry */
+@keyframes ui-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+button,
+input,
+select,
+textarea {
+  animation: ui-slide-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  button,
+  input,
+  select,
+  textarea {
+    animation: none;
+  }
+}
+
+/* factory pages embedded in the shell */
+main:has(.erp-frame) {
+  padding: 0;
+  height: 100vh;
+}
+.erp-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+
+/* count badge in the sidebar (new service requests) */
+nav .badge {
+  margin-left: auto;
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--stopped);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
 }
